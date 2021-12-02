@@ -1,11 +1,11 @@
-def main(input1):
+def main(input):
     
     def readfile(textfile):
         f = open(file=f"{textfile}", mode="r")
         return f.read().split("\n")
     
-    def getPosition(input1):
-        directions = [x.split(' ') for x in readfile(input1)] 
+    def getPosition(input):
+        directions = [x.split(' ') for x in readfile(input)] 
         x = 0
         y = 0
         for i in directions:
@@ -21,8 +21,8 @@ def main(input1):
                 y += distance
         return x*y
     
-    def getPositionWithAim(input1):
-        directions = [x.split(' ') for x in readfile(input1)] 
+    def getPositionWithAim(input):
+        directions = [x.split(' ') for x in readfile(input)] 
         x = 0
         y = 0
         aim = 0
@@ -38,8 +38,8 @@ def main(input1):
                 aim += command
         return x*y
 
-    print(f"Problem 1 answer is: {getPosition(input1)}")
-    print(f"Problem 1 answer is: {getPositionWithAim(input1)}")
+    print(f"Problem 1 answer is: {getPosition(input)}")
+    print(f"Problem 2 answer is: {getPositionWithAim(input)}")
 
 if __name__ == "__main__":
     main('Day2\day2_input2.txt')
