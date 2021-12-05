@@ -1,8 +1,8 @@
 def main(input):
     
     def readfile(textfile):
-        f = open(file=f"{textfile}", mode="r")
-        return f.read().split("\n")
+        with open(file=f"{textfile}", mode="r") as f:
+            return [line.replace('\n','') for line in f]
     
     def getPosition(input):
         directions = [x.split(' ') for x in readfile(input)] 
@@ -42,4 +42,4 @@ def main(input):
     print(f"Problem 2 answer is: {getPositionWithAim(input)}")
 
 if __name__ == "__main__":
-    main('Day2\day2_input2.txt')
+    main('Day2\day2_input.txt')
