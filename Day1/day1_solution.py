@@ -1,8 +1,8 @@
-def Main(input1, input2):
+def Main(input):
     
     def readfile(textfile):
-        f = open(file=f"{textfile}", mode="r")
-        return f.read().split("\n")
+        with open(file=f"{textfile}", mode="r") as f:
+            return [line.replace('\n','') for line in f]
     
     def inc_counter(lines):
         counter = 0
@@ -16,8 +16,8 @@ def Main(input1, input2):
         sum_windows = [sum([int(y) for y in x]) for x in nums if len(x) == 3 and "" not in x]
         return inc_counter(sum_windows)
 
-    print(f"task 1 answer = {inc_counter(readfile(input1))}")
-    print(f"task 2 answer = {inc_window_counter(readfile(input2))}")
+    print(f"task 1 answer = {inc_counter(readfile(input))}")
+    print(f"task 2 answer = {inc_window_counter(readfile(input))}")
 
 if __name__ == "__main__":
-    Main("day1_input.txt", "day1_input2.txt")
+    Main("Day1\day1_input.txt")
