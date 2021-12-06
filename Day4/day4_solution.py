@@ -4,11 +4,10 @@ def main(input):
     
     def readfile(textfile):
         with open(file=f"{textfile}", mode="r") as f:
-            return f.read()
-            # return filter(None, [line.split('\n') for line in f])
+            return f.read().split('\n\n') 
 
     def getGrids(input):
-        lines = readfile(input).split('\n\n')
+        lines = readfile(input)
         scoring_nums = lines.pop(0).split(',')
         scoring_nums = [int(x) for x in scoring_nums]
         lines = [x.split('\n') for x in lines] 
@@ -31,7 +30,6 @@ def main(input):
             for i in range(len(grids)-1, -1, -1):
                 grid = grids[i]
                 grid[grid == score] *= -1
-                # return score, grid
                 if checkIfWon(grid):
                     winners.append((grid, score))
                     grids.pop(i)
