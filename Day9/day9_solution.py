@@ -6,150 +6,150 @@ def main(input):
         with open(file=f"{textfile}", mode="r") as f:
             return f.read()
 
-# find low points on grid
-# a low point is the the lowest number, based on adjacent numbers - up,down,left,right
-# risk is 1 + height. What is sum of risk?
-
-# Make Grid
-# Find adjacent values to the current
-# 
-
     def getAdjacentRows(listOfLists, index):
-    # Easy way, get the adjacent rows
-        
+
         currentRow = np.array(listOfLists[index])
-        if index == -1:
-            previousRow =np.array( listOfLists[index-1])
+        if index == len(listOfLists)-1:
+            previousRow = np.array(listOfLists[index-1])
             miniGrid = np.vstack((currentRow,  previousRow))
         elif index == 0:
             nextRow = np.array(listOfLists[index+1])
             miniGrid = np.vstack((currentRow, nextRow))
         else:
-            previousRow =np.array( listOfLists[index-1])
+            previousRow = np.array(listOfLists[index-1])
             nextRow = np.array(listOfLists[index+1])
             miniGrid = np.vstack((currentRow, nextRow, previousRow))
         return miniGrid
     
-    def getAdjacentNums(grid):
+    def getAdjacentNums(grid, index, lastRowIndex):
         lowPoints1 = []
         lowPoints2 = []
+        currentRow = 0
+        rowType = ''
+        if index == 0:
+            rowType = 'first'
+        elif index == lastRowIndex:
+            rowType = 'last'
+        for i in range(len(grid[currentRow])):
+            testSet1 = []
+            testSet2 = []
+            if rowType == 'first':    
+                if i == 0:
+                    num = grid[currentRow][i]
+                    down = grid[currentRow+1][i]
+                    right = grid[currentRow][i+1]
+                    rightDown = grid[currentRow+1][i+1]
+                    testSet1 = {down,right}
+                    testSet2 = {down,right,rightDown}
+                elif i == len(grid[currentRow])-1:
+                    num = grid[currentRow][i]
+                    down = grid[currentRow+1][i]
+                    left = grid[currentRow][i-1]
+                    leftDown = grid[currentRow+1][i-1]
+                    testSet1 = {down,left}
+                    testSet2 = {down,left,leftDown}
+                else:
+                    num = grid[currentRow][i]
+                    down = grid[currentRow+1][i]
+                    right = grid[currentRow][i+1]
+                    rightDown = grid[currentRow+1][i+1]
+                    left = grid[currentRow][i-1]
+                    leftDown = grid[currentRow+1][i-1]
+                    testSet1 = {down,left,right}
+                    testSet2 = {down,left,leftDown,right,rightDown}
+                
+                if all(x > num for x in testSet1) :
+                    lowPoints1.append(num)
+                if all(x > num for x in testSet2) :
+                    lowPoints2.append(num)
+                
+                
 
-        for i in range(len(grid)):
-            if i == 0:    
-                for nums in range(len(grid[i])):
-                    if nums == 0:
-                        num = grid[i][nums]
-                        down = grid[i+1][nums]
-                        right = grid[i][nums+1]
-                        rightDown = grid[i+1][nums+1]
-                        testSet1 = {down,right}
-                        testSet2 = {down,right,rightDown}
-                    if nums == -1:
-                        num = grid[i][nums]
-                        down = grid[i+1][nums]
-                        left = grid[i][nums-1]
-                        leftDown = grid[i+1][nums-1]
-                        testSet1 = {down,left}
-                        testSet2 = {down,left,leftDown}
-                    else:
-                        num = grid[i][nums]
-                        down = grid[i+1][nums]
-                        right = grid[i][nums+1]
-                        rightDown = grid[i+1][nums+1]
-                        left = grid[i][nums-1]
-                        leftDown = grid[i+1][nums-1]
-                        testSet1 = {down,left,leftDown,right,rightDown}
-                        testSet2 = {down,left,leftDown,right,rightDown}
+            elif rowType == 'last':
+                if i == 0:
+                    num = grid[currentRow][i]
+                    up = grid[currentRow-1][i]
+                    right = grid[currentRow][i+1]
+                    rightUp = grid[currentRow+1][i+1]
+                    testSet1 = {up,right}
+                    testSet2 = {up,right,rightUp}
+                elif i == len(grid[currentRow])-1:
+                    num = grid[currentRow][i]
+                    up = grid[currentRow-1][i]
+                    left = grid[currentRow][i-1]
+                    leftUp = grid[currentRow-1][i-1]
+                    testSet1 = {up,left}
+                    testSet2 = {up,left,leftUp}
+                else:
+                    num = grid[currentRow][i]
+                    up = grid[currentRow-1][i]
+                    right = grid[currentRow][i+1]
+                    rightUp = grid[currentRow-1][i+1]
+                    left = grid[currentRow][i-1]
+                    leftUp = grid[currentRow-1][i-1]
+                    testSet1 = {up,left,right}
+                    testSet2 = {up,left,leftUp,right,rightUp}
                     
-                    if [x for x in testSet1 if x > num and x != num] != []:
-                        lowPoints1.append(num)
-                    if [x for x in testSet2 if x > num and x != num] != []:
-                        lowPoints2.append(num)
+                if all(x > num for x in testSet1) :
+                    lowPoints1.append(num)
+                if all(x > num for x in testSet2) :
+                    lowPoints2.append(num)
 
-            elif i == -1:
-                for nums in range(len(grid[i])):
-                    if nums == 0:
-                        num = grid[i][nums]
-                        up = grid[i+1][nums]
-                        down = grid[i+1][nums]
-                        right = grid[i][nums+1]
-                        rightUp = grid[i+1][nums+1]
-                        rightDown = grid[i-1][nums+1]
-                        testSet1 = {up,right}
-                        testSet2 = {up,right,rightUp}
-                    if nums == -1:
-                        num = grid[i][nums]
-                        up = grid[i+1][nums]
-                        down = grid[i+1][nums]
-                        left = grid[i][nums-1]
-                        leftUp = grid[i+1][nums-1]
-                        leftDown = grid[i+1][nums-1]
-                        testSet1 = {up,left}
-                        testSet2 = {up,left,leftUp}
-                    else:
-                        num = grid[i][nums]
-                        up = grid[i+1][nums]
-                        down = grid[i+1][nums]
-                        right = grid[i][nums+1]
-                        rightDown = grid[i+1][nums+1]
-                        rightUp = grid[i+1][nums+1]
-                        left = grid[i][nums-1]
-                        leftDown = grid[i+1][nums-1]
-                        leftUp = grid[i+1][nums-1]
-                        testSet1 = {up,left,leftUp,right,rightUp}
-                        testSet2 = {up,left,leftUp,right,rightUp}
-                    
-                    if [x for x in testSet1 if x > num and x != num] != []:
-                        lowPoints1.append(num)
-                    if [x for x in testSet2 if x > num and x != num] != []:
-                        lowPoints2.append(num)
-            
             else:
-                for nums in range(len(grid[i])):
-                    if nums == 0:
-                        num = grid[i][nums]
-                        up = grid[i+1][nums]
-                        right = grid[i][nums+1]
-                        rightUp = grid[i+1][nums+1]
-                        testSet1 = {up,right}
-                        testSet2 = {up,right,rightUp}
-                    if nums == -1:
-                        num = grid[i][nums]
-                        up = grid[i+1][nums]
-                        left = grid[i][nums-1]
-                        leftUp = grid[i+1][nums-1]
-                        testSet1 = {up,left}
-                        testSet2 = {up,left,leftUp}
-                    else:
-                        num = grid[i][nums]
-                        up = grid[i+1][nums]
-                        right = grid[i][nums+1]
-                        rightUp = grid[i+1][nums+1]
-                        left = grid[i][nums-1]
-                        leftUp = grid[i+1][nums-1]
-                        testSet1 = {up,left,leftUp,right,rightUp}
-                        testSet2 = {up,left,leftUp,right,rightUp}
-                    
-                    if [x for x in testSet1 if x > num and x != num] != []:
-                        lowPoints1.append(num)
-                    if [x for x in testSet2 if x > num and x != num] != []:
-                        lowPoints2.append(num)
+                if i == 0:
+                    num = grid[currentRow][i]
+                    up = grid[currentRow-1][i]
+                    down = grid[currentRow+1][i]
+                    right = grid[currentRow][i+1]
+                    rightDown = grid[currentRow-1][i+1]
+                    rightUp = grid[currentRow-1][i+1]
+                    testSet1 = {up,right,down}
+                    testSet2 = {up,down,right,rightUp,rightDown}
+
+                elif i == len(grid[currentRow])-1:
+                    num = grid[currentRow][i]
+                    up = grid[currentRow-1][i]
+                    down = grid[currentRow+1][i]
+                    left = grid[currentRow][i-1]
+                    leftUp = grid[currentRow-1][i-1]
+                    leftDown = grid[currentRow+1][i-1]
+                    testSet1 = {up,down,left}
+                    testSet2 = {up,down,left,leftUp,leftDown}
+                else:
+                    num = grid[currentRow][i]
+                    up = grid[currentRow-1][i]
+                    right = grid[currentRow][i+1]
+                    rightUp = grid[currentRow-1][i+1]
+                    left = grid[currentRow][i-1]
+                    leftUp = grid[currentRow-1][i-1]
+                    down = grid[currentRow+1][i]
+                    leftDown = grid[currentRow+1][i-1]
+                    rightDown = grid[currentRow-1][i+1]
+                    testSet1 = {up,down,left,right}
+                    testSet2 = {up,down,left,leftUp,leftDown,right,rightUp,rightDown}               
+                if all(x > num for x in testSet1) :
+                    lowPoints1.append(num)
+                if all(x > num for x in testSet2) :
+                    lowPoints2.append(num)
+                
         return lowPoints1, lowPoints2
         
     def getLowPoints(input: str):
-        prelim = np.array( [[int(y) for y in list(x)] for x in list(readfile(input).split('\n'))])
+        prelim = np.array([[int(y) for y in list(x)] for x in list(readfile(input).split('\n'))])
         lowPoints1 = []
         lowPoints2 = []
+        lenDataset = len(prelim)-1
         for i in range(len(prelim)):
-            x = getAdjacentRows(prelim, i)
-            points1, points2 = getAdjacentNums(x)
+            minigrid = getAdjacentRows(prelim, i)
+            points1, points2 = getAdjacentNums(minigrid, i, lenDataset)
             if points1 != []:
                 lowPoints1.append(points1)
-                lowPoints2.append(points2)        
-        return lowPoints1, lowPoints2
-    print(getLowPoints(input))
+                lowPoints2.append(points2)
+        return np.hstack(np.array(lowPoints1)), np.hstack(np.array(lowPoints2))
 
-   # print(f'Problem 2 Solution : \n{getLowPoints(input)}')
+    lowPoints1, lowPoints2 = getLowPoints(input)   
+    print(f'Problem 1 Solution : \n{sum(lowPoints1+1)}')
+    print(f'Problem 2 Solution : \n{lowPoints2}')
 
 if __name__ == "__main__":
     main('Day9\day9_input.txt')
