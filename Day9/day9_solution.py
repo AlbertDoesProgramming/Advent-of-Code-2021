@@ -104,9 +104,7 @@ def main(input):
     print(f'Problem 1 Solution : \n{sum(lowPoints1+1)}')
 
     def getNodes(matrix, x, y, nodes, maxHeight, maxWidth):
-        if x < 0 or y < 0 or x > maxHeight or y > maxWidth \
-                or matrix[x][y] == 9 \
-                or (x, y) in nodes:
+        if x < 0 or y < 0 or x > maxHeight or y > maxWidth or matrix[x][y] == 9 or (x, y) in nodes:
             return
         nodes.append((x, y))
         getNodes(matrix, x, y + 1, nodes, maxHeight, maxWidth)
