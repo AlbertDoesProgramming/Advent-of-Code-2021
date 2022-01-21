@@ -4,6 +4,7 @@ def main(input):
         with open(file=f"{textfile}", mode="r") as f:
             return f.read()    
     
+    # Plan
     
     
 if __name__ == "__main__":
